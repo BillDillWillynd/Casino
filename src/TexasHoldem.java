@@ -1,11 +1,7 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class TexasHoldem {
-    int roundCounter = 0;
-    HashMap<String, Integer> userInfo = new HashMap<>();
+    HashMap<String, ArrayList<Integer>> userInfo = new HashMap<>();
     String[][] deck = {{"2h","2d","2c","2s",},
             {"3h","3d","3c","3s"},
             {"4h","4d","4c","4s"},
@@ -19,25 +15,48 @@ public class TexasHoldem {
             {"12h","12d","12c","12s"}, //12 = Queen
             {"13h","13d","13c","13s"}, //13 = King
             {"14h","14d","14c","14s"}}; //14 = Ace
+    String[] fullGlobalHand = shuffle(5);
 
     public TexasHoldem(){
-        bot1();
-        System.out.println(userInfo);
+
     }
     public void bot1(){
-        userInfo.put("bot1", null);
+        userInfo.put("bot1", new ArrayList<>());
+        userInfo.get("bot1").add(1); //value
+        userInfo.get("bot1").add(2); //cash
+        userInfo.get("bot1").add(3); //position
+        valueCalcluator(shuffle(2));
     }
     public void bot2(){
         userInfo.put("bot2", null);
+        userInfo.get("bot2").add(null); //value
+        userInfo.get("bot2").add(null); //cash
+        userInfo.get("bot2").add(null); //position
     }
     public void bot3(){
         userInfo.put("bot3", null);
+        userInfo.get("bot3").add(null); //value
+        userInfo.get("bot3").add(null); //cash
+        userInfo.get("bot3").add(null); //position
     }
     public void bot4(){
         userInfo.put("bot4", null);
+        userInfo.get("bot4").add(null); //value
+        userInfo.get("bot4").add(null); //cash
+        userInfo.get("bot4").add(null); //position
     }
     public void player(){
         userInfo.put("player", null);
+        userInfo.get("player").add(null); //value
+        userInfo.get("player").add(null); //cash
+        userInfo.get("player").add(null); //position
+    }
+    public int valueCalcluator(String[] personalHand){
+        WinConditions winCons = new WinConditions(fullGlobalHand, personalHand);
+        //return 14 = High Card ace
+        //return 106 = One Pair six
+        //return 1000 = Royal Flush
+        return 1;
     }
 
     public String[] shuffle(int length) {
@@ -57,29 +76,5 @@ public class TexasHoldem {
         deck[ranCardY][ranCardX] = "00";
         return resultHand;
     }
-    public List<List<String>> GlobalHandComb(List<String> globalHand, List<String> comb) {
-        //WARNING!!! I did not write this
-        ArrayList<String> source = new ArrayList<>(globalHand);
 
-        if (comb.size() == 3) {
-            List<List<String>> result = new ArrayList<>();
-            result.add(comb);
-            return result;
-        }
-
-        List<List<String>> result = new ArrayList<>();
-        Iterator<String> iterator = source.iterator();
-
-        while (iterator.hasNext()) {
-            String item = iterator.next();
-            iterator.remove();
-
-            List<String> newComb = new ArrayList<>(comb);
-            newComb.add(item);
-
-            result.addAll(GlobalHandComb(new ArrayList<>(source), newComb));
-        }
-        return result;
-
-    }
 }
