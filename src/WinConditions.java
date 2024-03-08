@@ -20,7 +20,22 @@ public class WinConditions {
     }
     public List<List<Integer>> toSortedNumericHand(List<List<Integer>> unsortedNumericHand){
 
-        List<List<Integer>> sortedNumericHand = new ArrayList<>();
+        List<List<Integer>> sortedNumericHand = new ArrayList<>(unsortedNumericHand);
+
+        for(List<Integer> cardList : unsortedNumericHand){
+            List<Integer> numericCards = new ArrayList<>();
+            boolean swap = true;
+            while (swap) {
+                swap = false;
+                for (int j = 0; j < cardList.size(); j++) {
+                    if (cardList.get(j) > cardList.get(j+1)) {
+
+                        swap = true;
+                    }
+                }
+            }
+            sortedNumericHand.add(numericCards);
+        }
 
         return sortedNumericHand;
     }
