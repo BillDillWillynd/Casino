@@ -1,22 +1,55 @@
-import java.lang.foreign.GroupLayout;
+
 import java.util.*;
 
-public class WinConditions extends TexasHoldem{
-    String[] fullGlobalHand;
-    String[] personalHand;
-    WinConditions(String[] fullGlobalHand, String[] personalHand){
+public class WinConditions {
+    List<String> currentGlobalHand;
+    List<String> personalHand;
+
+    WinConditions(List<String> currentGlobalHand, List<String> personalHand) {
+        this.currentGlobalHand = currentGlobalHand;
         this.personalHand = personalHand;
-        this.fullGlobalHand = fullGlobalHand;
-        List<List<String>> TriGlobalHandComb = TriGlobalHandComb(new ArrayList<>(Arrays.asList(fullGlobalHand)), new ArrayList<>());
-    }
-    WinConditions(String[] personalHand){
-        this.personalHand = personalHand;
-    }
-    protected void Calculator(){
+        List<List<String>> handTest = PersonalAndGlobalHand(TriGlobalHandComb(currentGlobalHand, new ArrayList<>()), personalHand);
 
     }
-    protected List<List<String>> TriGlobalHandComb(List<String> globalHand, List<String> comb) {
-        //WARNING!!! I did not write this
+    WinConditions(List<String> personalHand) {
+        this.personalHand = personalHand;
+    }
+
+    protected void Calculator() {
+
+    }
+    public List<List<Integer>> toSortedNumericHand(List<List<Integer>> unsortedNumericHand){
+
+        List<List<Integer>> sortedNumericHand = new ArrayList<>();
+
+        return sortedNumericHand;
+    }
+    public List<List<Integer>> toUnsortedNumericHand(List<List<String>> hand){
+
+        List<List<Integer>> UnsortedNumericHand = new ArrayList<>();
+        for(List<String> cardList : hand){
+            List<Integer> numericCards = new ArrayList<>();
+            for(String cardStr : cardList){
+                int length = cardStr.length();
+                numericCards.add(Integer.parseInt(cardStr.substring(0, cardStr.length()-1)));
+            }
+            UnsortedNumericHand.add(numericCards);
+        }
+        return UnsortedNumericHand;
+    }
+    public List<List<String>> PersonalAndGlobalHand(List<List<String>> globalHandComb, List<String> personalHand) {
+
+        List<List<String>> result = new ArrayList<>();
+
+        for (int i = 0; i <globalHandComb.size(); i++) {
+            List<String> combination = new ArrayList<>();
+            combination.addAll(personalHand);
+            combination.addAll(globalHandComb.get(i).subList(0, 3));
+            result.add(combination);
+        }
+        return result;
+    }
+    public List<List<String>> TriGlobalHandComb(List<String> globalHand, List<String> comb) {
         ArrayList<String> source = new ArrayList<>(globalHand);
 
         if (comb.size() == 3) {
@@ -37,18 +70,7 @@ public class WinConditions extends TexasHoldem{
         }
         return result;
     }
-    protected String[][] DuoPersonalHand(List<List<String>> globalHandComb, String[] personalHand){
 
-        String[][] result = new String[10][5];
-
-        for(int i = 0; i<10; i++){
-            result[i][0] = personalHand[0];
-            result[i][1] = personalHand[1];
-            for(int j = 0; j<3; j++){
-                result[i][j+2] = globalHandComb.get(i).get(j);
-            }
-        }
-        return result;
-    }
 
 }
+

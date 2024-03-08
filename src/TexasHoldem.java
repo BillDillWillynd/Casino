@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class TexasHoldem {
+    int roundCounter = 0;
     HashMap<String, ArrayList<Integer>> userInfo = new HashMap<>();
     String[][] deck = {{"2h","2d","2c","2s",},
             {"3h","3d","3c","3s"},
@@ -15,17 +16,18 @@ public class TexasHoldem {
             {"12h","12d","12c","12s"}, //12 = Queen
             {"13h","13d","13c","13s"}, //13 = King
             {"14h","14d","14c","14s"}}; //14 = Ace
-    String[] fullGlobalHand = shuffle(5);
+    List<String> currentGlobalHand = getCurrentGlobalHand(); //correct
+    List<String> TestCurrentGlobalHand = Arrays.asList("10h", "3d", "4s", "12d"); //temporary
 
     public TexasHoldem(){
-
+       List<String> TestpersonalHand = shuffle(2);
+       WinConditions winCons = new WinConditions(TestCurrentGlobalHand, TestpersonalHand);
     }
     public void bot1(){
         userInfo.put("bot1", new ArrayList<>());
-        userInfo.get("bot1").add(1); //value
-        userInfo.get("bot1").add(2); //cash
-        userInfo.get("bot1").add(3); //position
-        valueCalcluator(shuffle(2));
+        userInfo.get("bot1").add(null); //value
+        userInfo.get("bot1").add(null); //cash
+        userInfo.get("bot1").add(null); //position
     }
     public void bot2(){
         userInfo.put("bot2", null);
@@ -52,14 +54,12 @@ public class TexasHoldem {
         userInfo.get("player").add(null); //position
     }
     public int valueCalcluator(String[] personalHand){
-        WinConditions winCons = new WinConditions(fullGlobalHand, personalHand);
         //return 14 = High Card ace
         //return 106 = One Pair six
         //return 1000 = Royal Flush
         return 1;
     }
-
-    public String[] shuffle(int length) {
+    public List<String> shuffle(int length) {
         String[] resultHand = new String[length];
         int ranCardY = 0;
         int ranCardX = 0;
@@ -74,7 +74,18 @@ public class TexasHoldem {
             resultHand[i] = deck[ranCardY][ranCardX];
         }
         deck[ranCardY][ranCardX] = "00";
-        return resultHand;
+        return Arrays.asList(resultHand);
+    }
+    public List<String> getCurrentGlobalHand(){
+        List<String> temp = new ArrayList<>();
+        if(roundCounter == 1){
+            temp.addAll(shuffle(3));
+        }else if(roundCounter == 2){
+            temp.addAll(shuffle(1));
+        }else if(roundCounter == 3){
+            temp.addAll(shuffle(1));
+        }
+        return temp;
     }
 
 }
