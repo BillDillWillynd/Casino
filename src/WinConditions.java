@@ -1,4 +1,4 @@
-
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class WinConditions {
@@ -9,6 +9,7 @@ public class WinConditions {
         this.currentGlobalHand = currentGlobalHand;
         this.personalHand = personalHand;
         List<List<String>> handTest = PersonalAndGlobalHand(TriGlobalHandComb(currentGlobalHand, new ArrayList<>()), personalHand);
+        System.out.println(toUnsortedNumericHand(handTest));
 
     }
     WinConditions(List<String> personalHand) {
@@ -88,4 +89,3 @@ public class WinConditions {
 
 
 }
-
