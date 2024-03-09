@@ -17,10 +17,10 @@ public class TexasHoldem {
             {"13h", "13d", "13c", "13s"}, //13 = King
             {"14h", "14d", "14c", "14s"}}; //14 = Ace
     List<String> currentGlobalHand = getCurrentGlobalHand(); //correct
-    List<String> TestCurrentGlobalHand = Arrays.asList("10h", "3d", "4s", "12d"); //temporary
+    List<String> TestCurrentGlobalHand = Arrays.asList("10h", "3d", "4s", "12d", "7c"); //temporary
+    List<String> TestpersonalHand = shuffle(2); //temporary
 
     public TexasHoldem() {
-        List<String> TestpersonalHand = shuffle(2);
         WinConditions winCons = new WinConditions(TestCurrentGlobalHand, TestpersonalHand);
     }
 
