@@ -29,12 +29,11 @@ public class WinConditions {
            for(int i = 0; i<valueTracker.length; i++) valueTracker[i] = 0;
            if(currentGlobalHand.size() > 5){
                int ofAkind = OfAkind(handNum);
-
                if(ofAkind > 100 && ofAkind < 120) valueTracker[1] = ofAkind;
                else if(ofAkind > 200 && ofAkind < 220) valueTracker[2] = ofAkind;
                else if(ofAkind > 700 && ofAkind < 720) valueTracker[7] = ofAkind;
                System.out.println(ofAkind);
-               System.out.println(FullHouse(handNum));
+               valueTracker[6] = FullHouse(handNum);
                valueTracker[4] = Straight(handNum);
                valueTracker[5] = Flush(handSuite);
                valueTracker[8] = RoyalFlush(valueTracker[4], valueTracker[5]);
@@ -130,7 +129,15 @@ public class WinConditions {
         }else return 0;
     }
     protected int FullHouse(List<List<Integer>> handNum){
-        int highCard = 0;
+        for(int i = 0; i<handNum.size(); i++){
+            if(handNum.get(i).get(0).equals(handNum.get(i).get(1)) && handNum.get(i).get(0).equals(handNum.get(i).get(2))
+            && handNum.get(i).get(3).equals(handNum.get(i).get(4))){
+                return Collections.max(handNum.get(i)) + 600;
+            }else if(handNum.get(i).get(0).equals(handNum.get(i).get(1)) && handNum.get(i).get(2).equals(handNum.get(i).get(3))
+                    && handNum.get(i).get(2).equals(handNum.get(i).get(4))){
+                return Collections.max(handNum.get(i)) + 600;
+            }
+        }
         return 0;
     }
     protected int TwoPair(){
