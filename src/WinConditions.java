@@ -32,7 +32,8 @@ public class WinConditions {
                if(ofAkind > 100 && ofAkind < 120) valueTracker[1] = ofAkind;
                else if(ofAkind > 200 && ofAkind < 220) valueTracker[2] = ofAkind;
                else if(ofAkind > 700 && ofAkind < 720) valueTracker[7] = ofAkind;
-               System.out.println(ofAkind);
+               valueTracker[2] = TwoPair(handNum);
+               System.out.println(valueTracker[2]);
                valueTracker[6] = FullHouse(handNum);
                valueTracker[4] = Straight(handNum);
                valueTracker[5] = Flush(handSuite);
@@ -46,25 +47,25 @@ public class WinConditions {
            for(int i = 0; i<2; i++){
                personalHand2.add(Integer.parseInt(personalHand.get(i).substring(0, personalHand.get(i).length()-1)));
            }
-           int HighCard = Collections.max(personalHand2);
-           if(personalHand2.get(0) == personalHand2.get(1)){
-               return 100 + HighCard;
+           int highCard = Collections.max(personalHand2);
+           if(personalHand2.get(0).equals(personalHand2.get(1))){
+               return HandValues.ONE_PAIR.values + highCard;
            }
-           else return HighCard;
+           else return highCard;
        }
        return 0;
     }
     protected int RoyalFlush(int Straight, int Flush){
         int value = 0;
         if(Straight == 414 && Flush > 0 ){
-            value = 900;
+            value = HandValues.ROYAL_FLUSH.values;
         }
         return value;
     }
     protected int StraightFlush(int Straight, int Flush){
         int value = 0;
         if(Straight > 0 && Flush > 0){
-            value = 800;
+            value = HandValues.STRAIGHT_FLUSH.values;
         }
         return value;
     }
@@ -78,7 +79,8 @@ public class WinConditions {
                 }
             }
             if(count == 5){
-                value = Collections.max(handNum.get(i)) + 400;
+                int highCard = Collections.max(handNum.get(i));
+                value = HandValues.STRAIGHT.values + highCard;
                 break;
             }
         }
@@ -95,54 +97,71 @@ public class WinConditions {
                 }
             }
             if(count == 5){
-                value = 500;
+                int higCard = Collections.max(handSuite.get(i));
+                value = HandValues.FLUSH.values + higCard;
                 break;
             }
         }
         return value;
     }
     protected int OfAkind(List<List<Integer>> handNum){
-        int count = 0;
         int highCard = 0;
+        int temp = 0;
+        int value = 0;
         for(int i = 0; i<handNum.size(); i++){
+            int count = 1;
             for(int j = 0; j<handNum.get(i).size()-1; j++){
-                if(j<=2 && handNum.get(i).get(j).equals(handNum.get(i).get(j+1)) && handNum.get(i).get(j).equals(handNum.get(i).get(j+2))
-                        && handNum.get(i).get(j).equals(handNum.get(i).get(j+3))){
-                    count = 4;
-                    highCard = handNum.get(i).get(j);
-                    return highCard + 700;
-                }
-                if (j<3 && handNum.get(i).get(j).equals(handNum.get(i).get(j+1)) && handNum.get(i).get(j).equals(handNum.get(i).get(j+2))){
-                    highCard = handNum.get(i).get(j);
-                   if(count < 4) count = 3;
-                } else if (handNum.get(i).get(j).equals(handNum.get(i).get(j+1))){
-                    highCard = handNum.get(i).get(j);
-                    if(count < 3) count = 2;
-
+                if(handNum.get(i).get(j).equals(handNum.get(i).get(j+1))){
+                    count++;
+                    temp = count;
+                    if(temp > value){
+                        value = temp;
+                        highCard = handNum.get(i).get(j);
+                    }
+                }else{
+                    count = 1;
                 }
             }
         }
-        if(count == 3){
-            return highCard + 200;
-        }else if(count == 2){
-            return highCard + 100;
-        }else return 0;
+        if(value == 4) return HandValues.FOUR_OF_A_KIND.values + highCard;
+        else if(value == 3) return HandValues.THREE_OF_A_KIND.values + highCard;
+        else if(value == 2) return HandValues.ONE_PAIR.values + highCard;
+      return 0;
     }
     protected int FullHouse(List<List<Integer>> handNum){
         for(int i = 0; i<handNum.size(); i++){
+            int highCard = Collections.max(handNum.get(i));
             if(handNum.get(i).get(0).equals(handNum.get(i).get(1)) && handNum.get(i).get(0).equals(handNum.get(i).get(2))
             && handNum.get(i).get(3).equals(handNum.get(i).get(4))){
-                return Collections.max(handNum.get(i)) + 600;
+                return HandValues.FULL_HOUSE.values + highCard;
             }else if(handNum.get(i).get(0).equals(handNum.get(i).get(1)) && handNum.get(i).get(2).equals(handNum.get(i).get(3))
                     && handNum.get(i).get(2).equals(handNum.get(i).get(4))){
-                return Collections.max(handNum.get(i)) + 600;
+                return HandValues.FULL_HOUSE.values + highCard;
             }
         }
         return 0;
     }
-    protected int TwoPair(){
-        int value = 0;
-        return value;
+    protected int TwoPair(List<List<Integer>> handNum){
+        int countPairOne = 1;
+        int countPairTwo = 1;
+        int highCard = 0;
+        for(List<Integer> list : handNum){
+            int temp = 0;
+            highCard = Collections.max(list);
+            for(int i = 0; i<list.size()-1; i++){
+                if(list.get(i).equals(list.get(i+1))){
+                    countPairOne++;
+                    temp = list.get(i);
+                }
+                if(countPairOne == 2 && list.get(i).equals(list.get(i+1)) && list.get(i) != temp){
+                    countPairTwo++;
+                }
+                if(countPairOne == 2 && countPairTwo == 2){
+                    return HandValues.TWO_PAIR.values + highCard;
+                }
+            }
+        }
+       return 0;
     }
     protected List<List<Integer>> toSortedNumericHand(List<List<Integer>> unsortedNumericHand){
 

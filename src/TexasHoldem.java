@@ -17,7 +17,7 @@ public class TexasHoldem {
             {"13h", "13d", "13c", "13s"}, //13 = King
             {"14h", "14d", "14c", "14s"}}; //14 = Ace
     List<String> currentGlobalHand = getCurrentGlobalHand(); //correct
-    List<String> TestCurrentGlobalHand = Arrays.asList("10s", "10h", "10s", "14d", "12h"); //temporary
+    List<String> TestCurrentGlobalHand = Arrays.asList("10s", "10h", "7s", "8d", "14h"); //temporary
     List<String> TestpersonalHand = Arrays.asList("14h", "2h"); //temporary
 
 
