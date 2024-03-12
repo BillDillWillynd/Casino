@@ -16,15 +16,19 @@ public class TexasHoldem {
             {"12h", "12d", "12c", "12s"}, //12 = Queen
             {"13h", "13d", "13c", "13s"}, //13 = King
             {"14h", "14d", "14c", "14s"}}; //14 = Ace
+
+    List<Integer> Positions = Arrays.asList(1, 2, 3, 4, 5);
     List<String> currentGlobalHand = getCurrentGlobalHand(); //correct
-    List<String> TestCurrentGlobalHand = Arrays.asList("2s", "4s", "7d", "5d", "12d"); //temporary
-    List<String> TestpersonalHand = Arrays.asList("6s", "10d"); //temporary
 
 
     public TexasHoldem() {
-        List<String> TestCurrentHand = new ArrayList<>(TestCurrentGlobalHand); //tempory
-        TestCurrentHand.addAll(TestpersonalHand);
-        WinConditions winCons = new WinConditions(TestCurrentHand, TestpersonalHand);
+        Positions = getPosition();
+        bot1();
+        bot2();
+        bot3();
+        bot4();
+        player();
+
     }
 
     public void bot1() {
@@ -32,34 +36,35 @@ public class TexasHoldem {
         userInfo.get("bot1").add(null); //value
         userInfo.get("bot1").add(null); //cash
         userInfo.get("bot1").add(null); //position
+
     }
 
     public void bot2() {
-        userInfo.put("bot2", null);
+        userInfo.put("bot2", new ArrayList<>());
         userInfo.get("bot2").add(null); //value
         userInfo.get("bot2").add(null); //cash
         userInfo.get("bot2").add(null); //position
     }
 
     public void bot3() {
-        userInfo.put("bot3", null);
+        userInfo.put("bot3", new ArrayList<>());
         userInfo.get("bot3").add(null); //value
         userInfo.get("bot3").add(null); //cash
-        userInfo.get("bot3").add(null); //position
+        userInfo.get("bot3").add(3); //position
     }
 
     public void bot4() {
-        userInfo.put("bot4", null);
+        userInfo.put("bot4", new ArrayList<>());
         userInfo.get("bot4").add(null); //value
         userInfo.get("bot4").add(null); //cash
-        userInfo.get("bot4").add(null); //position
+        userInfo.get("bot4").add(4); //position
     }
 
     public void player() {
-        userInfo.put("player", null);
+        userInfo.put("player", new ArrayList<>());
         userInfo.get("player").add(null); //value
         userInfo.get("player").add(null); //cash
-        userInfo.get("player").add(null); //position
+        userInfo.get("player").add(5); //position
     }
 
     public int valueCalcluator(String[] personalHand) {
@@ -97,5 +102,15 @@ public class TexasHoldem {
             temp.addAll(shuffle(1));
         }
         return temp;
+    }
+    public List<Integer> getPosition(){
+        if(roundCounter == 0){
+          Collections.shuffle(Positions, new Random());
+        }
+        return Positions;
+    }
+    public boolean usersTurn(int position, int turn){
+        if(turn == position) return true;
+        else return false;
     }
 }
