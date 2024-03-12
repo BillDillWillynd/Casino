@@ -37,8 +37,8 @@ public class WinConditions {
                valueTracker[6] = FullHouse(handNum);
                valueTracker[4] = Straight(handNum);
                valueTracker[5] = Flush(handSuite);
-               valueTracker[8] = RoyalFlush(valueTracker[4], valueTracker[5]);
-               valueTracker[9] = StraightFlush(valueTracker[4], valueTracker[5]);
+               valueTracker[8] = StraightFlush(valueTracker[4], valueTracker[5]);
+               valueTracker[9] = RoyalFlush(valueTracker[4], valueTracker[5]);
            }
 
        }else if(constructorNum == 2){
@@ -142,24 +142,11 @@ public class WinConditions {
         return 0;
     }
     protected int TwoPair(List<List<Integer>> handNum){
-        int countPairOne = 1;
-        int countPairTwo = 1;
         int highCard = 0;
+        int j = 0;
         for(List<Integer> list : handNum){
-            int temp = 0;
-            highCard = Collections.max(list);
-            for(int i = 0; i<list.size()-1; i++){
-                if(list.get(i).equals(list.get(i+1))){
-                    countPairOne++;
-                    temp = list.get(i);
-                }
-                if(countPairOne == 2 && list.get(i).equals(list.get(i+1)) && list.get(i) != temp){
-                    countPairTwo++;
-                }
-                if(countPairOne == 2 && countPairTwo == 2){
-                    return HandValues.TWO_PAIR.values + highCard;
-                }
-            }
+            int numPairs;
+
         }
        return 0;
     }
