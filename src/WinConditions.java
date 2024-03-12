@@ -29,11 +29,11 @@ public class WinConditions {
            for(int i = 0; i<valueTracker.length; i++) valueTracker[i] = 0;
            if(currentGlobalHand.size() > 5){
                int ofAkind = OfAkind(handNum);
-               if(ofAkind > 100 && ofAkind < 120) valueTracker[1] = ofAkind;
-               else if(ofAkind > 200 && ofAkind < 220) valueTracker[2] = ofAkind;
-               else if(ofAkind > 700 && ofAkind < 720) valueTracker[7] = ofAkind;
-               valueTracker[2] = TwoPair(handNum);
-               System.out.println(valueTracker[2]);
+               if(ofAkind > 100 && ofAkind < 115) valueTracker[1] = ofAkind;
+               else if(ofAkind > 200 && ofAkind < 215) valueTracker[2] = ofAkind;
+               else if(ofAkind > 300 && ofAkind < 315) valueTracker[3] = ofAkind;
+               else if(ofAkind > 700 && ofAkind < 715) valueTracker[7] = ofAkind;
+               System.out.println(ofAkind);
                valueTracker[6] = FullHouse(handNum);
                valueTracker[4] = Straight(handNum);
                valueTracker[5] = Flush(handSuite);
@@ -105,19 +105,25 @@ public class WinConditions {
         return value;
     }
     protected int OfAkind(List<List<Integer>> handNum){
+        List<Integer> PairHolder = new ArrayList<>(); //highCard decider
         int highCard = 0;
         int temp = 0;
         int value = 0;
-        for(int i = 0; i<handNum.size(); i++){
+        int numOfPairsCMP = 0;
+        int numOfPairs = 0;
+        for(List<Integer> list : handNum){
             int count = 1;
-            for(int j = 0; j<handNum.get(i).size()-1; j++){
-                if(handNum.get(i).get(j).equals(handNum.get(i).get(j+1))){
+            numOfPairsCMP = 0;
+            for(int i = 0; i<list.size()-1; i++){
+                if(list.get(i).equals(list.get(i+1))){
+                    PairHolder.add(list.get(i));
+                    PairHolder.add(list.get(i+1));
                     count++;
+                    numOfPairsCMP++;
                     temp = count;
-                    if(temp > value){
-                        value = temp;
-                        highCard = handNum.get(i).get(j);
-                    }
+                    if(temp > value) value = temp;
+                    if(numOfPairsCMP  > numOfPairs) numOfPairs = numOfPairsCMP ;
+                    highCard = Collections.max(PairHolder);
                 }else{
                     count = 1;
                 }
@@ -125,6 +131,7 @@ public class WinConditions {
         }
         if(value == 4) return HandValues.FOUR_OF_A_KIND.values + highCard;
         else if(value == 3) return HandValues.THREE_OF_A_KIND.values + highCard;
+        else if(value == 2 && numOfPairs == 2) return HandValues.TWO_PAIR.values + highCard;
         else if(value == 2) return HandValues.ONE_PAIR.values + highCard;
       return 0;
     }
