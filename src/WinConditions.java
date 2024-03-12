@@ -7,7 +7,7 @@ public class WinConditions {
     WinConditions(List<String> currentGlobalHand, List<String> personalHand) {
         this.currentGlobalHand = currentGlobalHand;
         this.personalHand = personalHand;
-        Calculator(1);
+        System.out.println(Calculator(1));
 
 
     }
@@ -27,22 +27,33 @@ public class WinConditions {
 
            int[] valueTracker = new int[10];
            for(int i = 0; i<valueTracker.length; i++) valueTracker[i] = 0;
-           if(currentGlobalHand.size() > 5){
-               int ofAkind = OfAkind(handNum);
-               if(ofAkind > 100 && ofAkind < 115) valueTracker[1] = ofAkind;
-               else if(ofAkind > 200 && ofAkind < 215) valueTracker[2] = ofAkind;
-               else if(ofAkind > 300 && ofAkind < 315) valueTracker[3] = ofAkind;
-               else if(ofAkind > 700 && ofAkind < 715) valueTracker[7] = ofAkind;
-               System.out.println(ofAkind);
-               valueTracker[6] = FullHouse(handNum);
+           if(currentGlobalHand.size() >= 5){
                valueTracker[4] = Straight(handNum);
                valueTracker[5] = Flush(handSuite);
                valueTracker[8] = StraightFlush(valueTracker[4], valueTracker[5]);
                valueTracker[9] = RoyalFlush(valueTracker[4], valueTracker[5]);
+               if(valueTracker[9] != 0) return valueTracker[9];
+               else if(valueTracker[8] != 0) return valueTracker[8];
+               else if(valueTracker[5] != 0) return valueTracker[5];
+               else if(valueTracker[4] != 0) return valueTracker[4];
+               else{
+                   valueTracker[6] = FullHouse(handNum);
+                   if(valueTracker[6] != 0) return valueTracker[6];
+                   else{
+                       int ofAkind = OfAkind(handNum);
+                       if (ofAkind > 100 && ofAkind < 115) valueTracker[1] = ofAkind;
+                       else if (ofAkind > 200 && ofAkind < 215) valueTracker[2] = ofAkind;
+                       else if (ofAkind > 300 && ofAkind < 315) valueTracker[3] = ofAkind;
+                       else if (ofAkind > 700 && ofAkind < 715) valueTracker[7] = ofAkind;
+                       if (ofAkind != 0) return ofAkind;
+                       else{
+                           valueTracker[0] = HighCard(personalHand);
+                           return valueTracker[0];
+                       }
+                   }
+               }
            }
-
        }else if(constructorNum == 2){
-
            List<Integer> personalHand2 = new ArrayList<>();
            for(int i = 0; i<2; i++){
                personalHand2.add(Integer.parseInt(personalHand.get(i).substring(0, personalHand.get(i).length()-1)));
@@ -97,7 +108,7 @@ public class WinConditions {
                 }
             }
             if(count == 5){
-                int higCard = Collections.max(handSuite.get(i));
+                int higCard = HighCard(personalHand);
                 value = HandValues.FLUSH.values + higCard;
                 break;
             }
@@ -148,14 +159,14 @@ public class WinConditions {
         }
         return 0;
     }
-    protected int TwoPair(List<List<Integer>> handNum){
-        int highCard = 0;
-        int j = 0;
-        for(List<Integer> list : handNum){
-            int numPairs;
-
+    public int HighCard(List<String> personalHand){
+        List<Integer> NumericPersonalHand = new ArrayList<>();
+        for(int i = 0; i<personalHand.size(); i++){
+            int length = personalHand.get(i).length();
+            NumericPersonalHand.add(Integer.parseInt(personalHand.get(i).substring(0, length-1)));
         }
-       return 0;
+        int highCard = Collections.max(NumericPersonalHand);
+        return HandValues.HIGH_CARD.values + highCard;
     }
     protected List<List<Integer>> toSortedNumericHand(List<List<Integer>> unsortedNumericHand){
 
@@ -193,8 +204,8 @@ public class WinConditions {
         if(numOrSuite == "num") return UnsortedNumericHand; //took away all the suites from the hand so "12c" -> "12"
         else return SuiteHand;
     }
-    protected List<List<String>> TriGlobalHandComb(List<String> globalHand, List<String> comb) {
-        ArrayList<String> source = new ArrayList<>(globalHand);
+    protected List<List<String>> TriGlobalHandComb(List<String> currentglobalHand, List<String> comb) {
+        ArrayList<String> source = new ArrayList<>(currentglobalHand);
 
         if (comb.size() == 5) {
             List<List<String>> result = new ArrayList<>();
@@ -212,7 +223,7 @@ public class WinConditions {
 
             result.addAll(TriGlobalHandComb(new ArrayList<>(source), newComb));
         }
-        return result; //returns all the combinations of the global hand within a range of 3
+        return result;
     }
 
 
