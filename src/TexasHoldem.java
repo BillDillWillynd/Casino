@@ -75,7 +75,7 @@ public class TexasHoldem {
         String decision = "fold";
         if((int)((Math.random() * foldChance) + 1) == 1){
             decision = "fold";
-        }else if((int)((Math.random() * raiseChance) + 1) == 1);
+        }else if((int)((Math.random() * raiseChance) + 1) == 1)
         return "";
     }
     public int valueToChanceValue(int value, String decision){
@@ -86,10 +86,8 @@ public class TexasHoldem {
             else if(value >= 10 && value < 15) return (value - 2);
 
             else if(value > 100 && value <= 106) return (value - 100); //One Pair Values
-            else if((value > 108 && value <= 114) return (value - 108);
-            else if()
+            else if(value > 108 && value <= 114) return (value - 108);
         }
-
 
         return 1;
     }
