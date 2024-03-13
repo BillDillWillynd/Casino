@@ -7,64 +7,64 @@ public class WinConditions {
     WinConditions(List<String> currentGlobalHand, List<String> personalHand) {
         this.currentGlobalHand = currentGlobalHand;
         this.personalHand = personalHand;
+        if(currentGlobalHand.size() > 2){
+            Calculator(1);
+        }else{
+            Calculator(2);
+        }
         System.out.println(Calculator(1));
 
-
-    }
-    WinConditions(List<String> personalHand) {
-        this.personalHand = personalHand;
-        Calculator(2);
     }
 
     protected int Calculator(int constructorNum) {
         int Totalvalue = 0;
 
-       if(constructorNum == 1){
+        if(constructorNum == 1){
 
-           List<List<String>> tempHand = new ArrayList<>(TriGlobalHandComb(currentGlobalHand, new ArrayList<>()));
-           List<List<Integer>> handSuite = new ArrayList<>(toSortedNumericHand(toUnsortedNumOrSuite(tempHand, "suite")));
-           List<List<Integer>> handNum = new ArrayList<>(toSortedNumericHand(toUnsortedNumOrSuite(tempHand, "num")));
+            List<List<String>> tempHand = new ArrayList<>(TriGlobalHandComb(currentGlobalHand, new ArrayList<>()));
+            List<List<Integer>> handSuite = new ArrayList<>(toSortedNumericHand(toUnsortedNumOrSuite(tempHand, "suite")));
+            List<List<Integer>> handNum = new ArrayList<>(toSortedNumericHand(toUnsortedNumOrSuite(tempHand, "num")));
 
-           int[] valueTracker = new int[10];
-           for(int i = 0; i<valueTracker.length; i++) valueTracker[i] = 0;
-           if(currentGlobalHand.size() >= 5){
-               valueTracker[4] = Straight(handNum);
-               valueTracker[5] = Flush(handSuite);
-               valueTracker[8] = StraightFlush(valueTracker[4], valueTracker[5]);
-               valueTracker[9] = RoyalFlush(valueTracker[4], valueTracker[5]);
-               if(valueTracker[9] != 0) return valueTracker[9];
-               else if(valueTracker[8] != 0) return valueTracker[8];
-               else if(valueTracker[5] != 0) return valueTracker[5];
-               else if(valueTracker[4] != 0) return valueTracker[4];
-               else{
-                   valueTracker[6] = FullHouse(handNum);
-                   if(valueTracker[6] != 0) return valueTracker[6];
-                   else{
-                       int ofAkind = OfAkind(handNum);
-                       if (ofAkind > 100 && ofAkind < 115) valueTracker[1] = ofAkind;
-                       else if (ofAkind > 200 && ofAkind < 215) valueTracker[2] = ofAkind;
-                       else if (ofAkind > 300 && ofAkind < 315) valueTracker[3] = ofAkind;
-                       else if (ofAkind > 700 && ofAkind < 715) valueTracker[7] = ofAkind;
-                       if (ofAkind != 0) return ofAkind;
-                       else{
-                           valueTracker[0] = HighCard(personalHand);
-                           return valueTracker[0];
-                       }
-                   }
-               }
-           }
-       }else if(constructorNum == 2){
-           List<Integer> personalHand2 = new ArrayList<>();
-           for(int i = 0; i<2; i++){
-               personalHand2.add(Integer.parseInt(personalHand.get(i).substring(0, personalHand.get(i).length()-1)));
-           }
-           int highCard = Collections.max(personalHand2);
-           if(personalHand2.get(0).equals(personalHand2.get(1))){
-               return HandValues.ONE_PAIR.values + highCard;
-           }
-           else return highCard;
-       }
-       return 0;
+            int[] valueTracker = new int[10];
+            for(int i = 0; i<valueTracker.length; i++) valueTracker[i] = 0;
+            if(currentGlobalHand.size() >= 5){
+                valueTracker[4] = Straight(handNum);
+                valueTracker[5] = Flush(handSuite);
+                valueTracker[8] = StraightFlush(valueTracker[4], valueTracker[5]);
+                valueTracker[9] = RoyalFlush(valueTracker[4], valueTracker[5]);
+                if(valueTracker[9] != 0) return valueTracker[9];
+                else if(valueTracker[8] != 0) return valueTracker[8];
+                else if(valueTracker[5] != 0) return valueTracker[5];
+                else if(valueTracker[4] != 0) return valueTracker[4];
+                else{
+                    valueTracker[6] = FullHouse(handNum);
+                    if(valueTracker[6] != 0) return valueTracker[6];
+                    else{
+                        int ofAkind = OfAkind(handNum);
+                        if (ofAkind > 100 && ofAkind < 115) valueTracker[1] = ofAkind;
+                        else if (ofAkind > 200 && ofAkind < 215) valueTracker[2] = ofAkind;
+                        else if (ofAkind > 300 && ofAkind < 315) valueTracker[3] = ofAkind;
+                        else if (ofAkind > 700 && ofAkind < 715) valueTracker[7] = ofAkind;
+                        if (ofAkind != 0) return ofAkind;
+                        else{
+                            valueTracker[0] = HighCard(personalHand);
+                            return valueTracker[0];
+                        }
+                    }
+                }
+            }
+        }else if(constructorNum == 2){
+            List<Integer> personalHand2 = new ArrayList<>();
+            for(int i = 0; i<2; i++){
+                personalHand2.add(Integer.parseInt(personalHand.get(i).substring(0, personalHand.get(i).length()-1)));
+            }
+            int highCard = Collections.max(personalHand2);
+            if(personalHand2.get(0).equals(personalHand2.get(1))){
+                return HandValues.ONE_PAIR.values + highCard;
+            }
+            else return highCard;
+        }
+        return 0;
     }
     protected int RoyalFlush(int Straight, int Flush){
         int value = 0;
@@ -144,13 +144,13 @@ public class WinConditions {
         else if(value == 3) return HandValues.THREE_OF_A_KIND.values + highCard;
         else if(value == 2 && numOfPairs == 2) return HandValues.TWO_PAIR.values + highCard;
         else if(value == 2) return HandValues.ONE_PAIR.values + highCard;
-      return 0;
+        return 0;
     }
     protected int FullHouse(List<List<Integer>> handNum){
         for(int i = 0; i<handNum.size(); i++){
             int highCard = Collections.max(handNum.get(i));
             if(handNum.get(i).get(0).equals(handNum.get(i).get(1)) && handNum.get(i).get(0).equals(handNum.get(i).get(2))
-            && handNum.get(i).get(3).equals(handNum.get(i).get(4))){
+                    && handNum.get(i).get(3).equals(handNum.get(i).get(4))){
                 return HandValues.FULL_HOUSE.values + highCard;
             }else if(handNum.get(i).get(0).equals(handNum.get(i).get(1)) && handNum.get(i).get(2).equals(handNum.get(i).get(3))
                     && handNum.get(i).get(2).equals(handNum.get(i).get(4))){

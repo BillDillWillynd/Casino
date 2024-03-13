@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class TexasHoldem {
+    int pot = 0;
     int roundCounter = 0;
     HashMap<String, ArrayList<Integer>> userInfo = new HashMap<>();
     String[][] deck = {{"2h", "2d", "2c", "2s",},
@@ -18,60 +19,52 @@ public class TexasHoldem {
             {"14h", "14d", "14c", "14s"}}; //14 = Ace
 
     List<Integer> Positions = Arrays.asList(1, 2, 3, 4, 5);
-    List<String> currentGlobalHand = getCurrentGlobalHand(); //correct
-
+    List<String> currentGlobalHand = getCurrentGlobalHand();
 
     public TexasHoldem() {
-        Positions = getPosition();
-        bot1();
-        bot2();
-        bot3();
-        bot4();
-        player();
-
+        setUserInfo();
+        Rounds();
     }
-
+    public void Rounds(){
+        int smallBlind = 25;
+        int bigBlind = 50;
+        while(true) {
+            for (int i = 0; i < Positions.size(); i++) {
+                if (i == Positions.get(0)) bot1();
+                if (i == Positions.get(1)) bot2();
+                if (i == Positions.get(2)) bot3();
+                if (i == Positions.get(3)) bot4();
+                if (i == Positions.get(4)) player();
+            }
+            if(roundCounter == 4){
+                break;
+            }
+        }
+    }
     public void bot1() {
-        userInfo.put("bot1", new ArrayList<>());
-        userInfo.get("bot1").add(null); //value
-        userInfo.get("bot1").add(null); //cash
-        userInfo.get("bot1").add(null); //position
-
+        List<String> personalHand = shuffle(2);
+        decision(userInfo.get("bot1").get(0), 5);
     }
 
     public void bot2() {
-        userInfo.put("bot2", new ArrayList<>());
-        userInfo.get("bot2").add(null); //value
-        userInfo.get("bot2").add(null); //cash
-        userInfo.get("bot2").add(null); //position
+        List<String> personalHand = shuffle(2);
     }
 
     public void bot3() {
-        userInfo.put("bot3", new ArrayList<>());
-        userInfo.get("bot3").add(null); //value
-        userInfo.get("bot3").add(null); //cash
-        userInfo.get("bot3").add(3); //position
+        List<String> personalHand = shuffle(2);
     }
 
     public void bot4() {
-        userInfo.put("bot4", new ArrayList<>());
-        userInfo.get("bot4").add(null); //value
-        userInfo.get("bot4").add(null); //cash
-        userInfo.get("bot4").add(4); //position
+        List<String> personalHand = shuffle(2);
     }
 
     public void player() {
-        userInfo.put("player", new ArrayList<>());
-        userInfo.get("player").add(null); //value
-        userInfo.get("player").add(null); //cash
-        userInfo.get("player").add(5); //position
-    }
+        List<String> personalHand = shuffle(2);
 
-    public int valueCalcluator(String[] personalHand) {
-        //return 14 = High Card ace
-        //return 106 = One Pair six
-        //return 1000 = Royal Flush
-        return 1;
+    }
+    public String decision(int value, int risky){
+        float multiplier = 1 + (roundCounter / 10);
+        return "hello";
     }
 
     public List<String> shuffle(int length) {
@@ -105,12 +98,39 @@ public class TexasHoldem {
     }
     public List<Integer> getPosition(){
         if(roundCounter == 0){
-          Collections.shuffle(Positions, new Random());
+            Collections.shuffle(Positions, new Random());
         }
         return Positions;
     }
     public boolean usersTurn(int position, int turn){
         if(turn == position) return true;
         else return false;
+    }
+
+    public void setUserInfo(){
+        userInfo.put("bot1", new ArrayList<>());
+        userInfo.get("bot1").add(null); //value
+        userInfo.get("bot1").add(null); //cash
+        userInfo.get("bot1").add(Positions.get(0)); //position
+
+        userInfo.put("bot2", new ArrayList<>());
+        userInfo.get("bot2").add(null); //value
+        userInfo.get("bot2").add(null); //cash
+        userInfo.get("bot2").add(Positions.get(1)); //position
+
+        userInfo.put("bot3", new ArrayList<>());
+        userInfo.get("bot3").add(null); //value
+        userInfo.get("bot3").add(null); //cash
+        userInfo.get("bot3").add(Positions.get(2)); //position
+
+        userInfo.put("bot4", new ArrayList<>());
+        userInfo.get("bot4").add(null); //value
+        userInfo.get("bot4").add(null); //cash
+        userInfo.get("bot4").add(Positions.get(3)); //position
+
+        userInfo.put("player", new ArrayList<>());
+        userInfo.get("player").add(null); //value
+        userInfo.get("player").add(null); //cash
+        userInfo.get("player").add(Positions.get(4)); //position
     }
 }
