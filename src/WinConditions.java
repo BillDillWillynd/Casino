@@ -7,12 +7,6 @@ public class WinConditions {
     WinConditions(List<String> currentGlobalHand, List<String> personalHand) {
         this.currentGlobalHand = currentGlobalHand;
         this.personalHand = personalHand;
-        if(currentGlobalHand.size() > 2){
-            Calculator(1);
-        }else{
-            Calculator(2);
-        }
-        System.out.println(Calculator(1));
 
     }
 

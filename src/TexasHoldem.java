@@ -1,6 +1,8 @@
 import java.util.*;
 
 public class TexasHoldem {
+
+    int checkAmount = 0;
     int pot = 0;
     int roundCounter = 0;
     HashMap<String, ArrayList<Integer>> userInfo = new HashMap<>();
@@ -43,7 +45,12 @@ public class TexasHoldem {
     }
     public void bot1() {
         List<String> personalHand = shuffle(2);
-        decision(userInfo.get("bot1").get(0), 5);
+        WinConditions winCon = new WinConditions(currentGlobalHand, personalHand);
+
+        if(roundCounter > 0) userInfo.get("bot1").set(0, winCon.Calculator(1));
+        else userInfo.get("bot1").set(0, winCon.Calculator(2));
+        decision(userInfo.get("bot1").get(0),userInfo.get("bot1").get(1), 4, checkAmount );
+
     }
 
     public void bot2() {
@@ -62,9 +69,29 @@ public class TexasHoldem {
         List<String> personalHand = shuffle(2);
 
     }
-    public String decision(int value, int risky){
-        float multiplier = 1 + (roundCounter / 10);
-        return "hello";
+    public String decision(int value, int cash, int riskLevels, int checkAmount){
+        int foldChance = riskLevels + 5;
+        int raiseChance = riskLevels;
+        String decision = "fold";
+        if((int)((Math.random() * foldChance) + 1) == 1){
+            decision = "fold";
+        }else if((int)((Math.random() * raiseChance) + 1) == 1);
+        return "";
+    }
+    public int valueToChanceValue(int value, String decision){
+        //Warning not supposed to be readable
+        if(roundCounter == 0) {
+            if (value <= 7) return (value - 7); //High Card Values
+            else if (value >= 8 && value < 10) return (value - 6);
+            else if(value >= 10 && value < 15) return (value - 2);
+
+            else if(value > 100 && value <= 106) return (value - 100); //One Pair Values
+            else if((value > 108 && value <= 114) return (value - 108);
+            else if()
+        }
+
+
+        return 1;
     }
 
     public List<String> shuffle(int length) {
